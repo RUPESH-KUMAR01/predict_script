@@ -111,7 +111,6 @@ class DetectionModel(nn.Module):
                     m.conv = fuse_conv_and_bn(m.conv, m.bn)  # update conv
                     delattr(m, "bn")  # remove batchnorm
                     m.forward = m.forward_fuse  # update forward
-            self.info(verbose=verbose)
 
         return self
 

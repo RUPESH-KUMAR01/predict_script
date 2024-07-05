@@ -484,9 +484,9 @@ def predict(source):
     dataset = LoadImagesAndVideos(source, batch=1, vid_stride=1)
     for batch_idx,batch in enumerate(dataset):
         paths, im0s, s = batch
+        print(paths[0])
         start = time.time()
         im = preprocess(im0s)
-        print(f"Preprocess time: {(time.time() - start) * 1e3} ms")
 
         start = time.time()
         preds = model(im)
@@ -494,7 +494,6 @@ def predict(source):
 
         start = time.time()
         results = non_max_suppression(prediction=preds, conf_thres=0.25, iou_thres=0.7, agnostic=False, max_det=300)
-        print(f"NMS time: {(time.time() - start) * 1e3} ms")
 
         for i, pred in enumerate(results):
             ori = im0s[i]
@@ -542,7 +541,6 @@ def predict(source):
             # Save images
             else:
                 cv2.imwrite(save_path, np.asarray(img))
-                print("Image Saved")
 
 
 @torch.no_grad()
@@ -550,7 +548,6 @@ def predict_webcam(im0s):
     im0s=[im0s]
     start = time.time()
     im = preprocess(im0s)
-    print(f"Preprocess time: {(time.time() - start) * 1e3} ms")
 
     start = time.time()
     preds = model(im)
@@ -558,7 +555,6 @@ def predict_webcam(im0s):
 
     start = time.time()
     results = non_max_suppression(prediction=preds, conf_thres=0.25, iou_thres=0.7, agnostic=False, max_det=300)
-    print(f"NMS time: {(time.time() - start) * 1e3} ms")
 
     for i, pred in enumerate(results):
         ori = im0s[i]
@@ -590,7 +586,6 @@ def predict_webcam(im0s):
 
         return img
         
-
 
 
 predict(r"assets")
